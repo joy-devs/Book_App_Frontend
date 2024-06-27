@@ -1,4 +1,3 @@
-
 import React, { useReducer, useRef, useState, useCallback, useEffect } from 'react';
 import useLocalStorage from './hooks';
 import './App.css';
@@ -10,6 +9,8 @@ interface Book {
   author: string;
   year: number;
 }
+
+
 
 interface State {
   books: Book[];
@@ -82,7 +83,7 @@ const App: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, []); // Empty dependency array to run only on mount
 
   const handleAddBook = useCallback(async () => {
     if (titleRef.current && authorRef.current && yearRef.current) {
