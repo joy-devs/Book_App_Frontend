@@ -1,5 +1,4 @@
 import React, { useReducer, useRef, useState, useCallback, useEffect } from 'react';
-import useLocalStorage from './hooks';
 import './App.css';
 import { fetchBooks, addBook, updateBook, deleteBook } from './Api';
 
@@ -9,8 +8,6 @@ interface Book {
   author: string;
   year: number;
 }
-
-
 
 interface State {
   books: Book[];
@@ -26,7 +23,7 @@ type Action =
 
 const initialState: State = {
   books: [],
-  currentPage: 1
+  currentPage: 1,
 };
 
 function reducer(state: State, action: Action): State {
@@ -40,7 +37,7 @@ function reducer(state: State, action: Action): State {
         ...state,
         books: state.books.map(book =>
           book.id === action.payload.id ? action.payload : book
-        )
+        ),
       };
     case 'DELETE_BOOK':
       return { ...state, books: state.books.filter(book => book.id !== action.payload) };
@@ -52,26 +49,12 @@ function reducer(state: State, action: Action): State {
 }
 
 const App: React.FC = () => {
-  const [storedBooks, setStoredBooks] = useLocalStorage<Book[]>('books', []);
-  const [state, dispatch] = useReducer(reducer, {
-    ...initialState,
-    books: storedBooks
-  });
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [searchQuery, setSearchQuery] = useState('');
   const titleRef = useRef<HTMLInputElement>(null);
   const authorRef = useRef<HTMLInputElement>(null);
   const yearRef = useRef<HTMLInputElement>(null);
   const booksPerPage = 5;
-
-  useEffect(() => {
-    dispatch({ type: 'SET_BOOKS', payload: storedBooks });
-  }, [storedBooks]);
-
-  useEffect(() => {
-    if (JSON.stringify(state.books) !== JSON.stringify(storedBooks)) {
-      setStoredBooks(state.books);
-    }
-  }, [state.books, storedBooks, setStoredBooks]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +66,7 @@ const App: React.FC = () => {
       }
     };
     fetchData();
-  }, []); // Empty dependency array to run only on mount
+  }, []);
 
   const handleAddBook = useCallback(async () => {
     if (titleRef.current && authorRef.current && yearRef.current) {
@@ -91,7 +74,7 @@ const App: React.FC = () => {
         id: Date.now(),
         title: titleRef.current.value,
         author: authorRef.current.value,
-        year: parseInt(yearRef.current.value, 10)
+        year: parseInt(yearRef.current.value, 10),
       };
 
       try {
