@@ -60,7 +60,12 @@ const App: React.FC = () => {
     const fetchData = async () => {
       try {
         const data = await fetchBooks();
-        dispatch({ type: 'SET_BOOKS', payload: data });
+        console.log('Fetched books:', data);
+        if (Array.isArray(data)) {
+          dispatch({ type: 'SET_BOOKS', payload: data });
+        } else {
+          console.error('Fetched data is not an array:', data);
+        }
       } catch (error) {
         console.error('Error fetching books:', error);
       }
