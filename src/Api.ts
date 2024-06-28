@@ -14,9 +14,20 @@ interface Book {
   year: number;
 }
 
+// export const fetchBooks = async () => {
+//   try {
+//     const response = await api.get<Book[]>('/'); // Adjust endpoint if necessary
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error fetching books:', error);
+//     throw error;
+//   }
+// };
+
 export const fetchBooks = async () => {
   try {
-    const response = await api.get<Book[]>('/'); // Adjust endpoint if necessary
+    const response = await axios.get('https://backend-api-ebj3.onrender.com/api/books'); // Adjust endpoint if necessary
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Error fetching books:', error);
