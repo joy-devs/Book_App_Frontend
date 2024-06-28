@@ -58,17 +58,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const data = await fetchBooks();
-        console.log('Fetched books:', data);
-        if (Array.isArray(data)) {
-          dispatch({ type: 'SET_BOOKS', payload: data });
-        } else {
-          console.error('Fetched data is not an array:', data);
-        }
-      } catch (error) {
-        console.error('Error fetching books:', error);
-      }
+      const data = await fetchBooks();
+      console.log('Fetched books:', data);
+      dispatch({ type: 'SET_BOOKS', payload: data });
     };
     fetchData();
   }, []);
