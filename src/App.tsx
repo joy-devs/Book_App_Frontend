@@ -1,6 +1,7 @@
 import React, { useReducer, useRef, useState, useCallback, useEffect } from 'react';
 import './App.css';
 import { fetchBooks, addBook, updateBook, deleteBook } from './Api';
+import { ScaleLoader } from 'react-spinners';
 
 interface Book {
   id: number;
@@ -54,6 +55,7 @@ const App: React.FC = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const authorRef = useRef<HTMLInputElement>(null);
   const yearRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(true);
   const booksPerPage = 5;
 
   useEffect(() => {
@@ -162,6 +164,8 @@ const App: React.FC = () => {
           </tr>
         </thead>
         <tbody>
+          {loading && <ScaleLoader color='#4fa94d'/> }
+
           {paginatedBooks.map((book) => (
             <tr key={book.id}>
               <td>{book.title}</td>
