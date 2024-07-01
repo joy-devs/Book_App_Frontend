@@ -55,16 +55,18 @@ const App: React.FC = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const authorRef = useRef<HTMLInputElement>(null);
   const yearRef = useRef<HTMLInputElement>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const booksPerPage = 5;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true)
         const data = await fetchBooks();
         console.log('Fetched books:', data);
         if (Array.isArray(data)) {
           dispatch({ type: 'SET_BOOKS', payload: data });
+        setLoading(false)
         } else {
           console.error('Fetched data is not an array:', data);
         }
@@ -164,7 +166,7 @@ const App: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {loading && <ScaleLoader color='#4fa94d'/> }
+          {loading && <ScaleLoader color='#4fa94d' height={18}/> }
 
           {paginatedBooks.map((book) => (
             <tr key={book.id}>
